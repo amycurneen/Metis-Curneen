@@ -62,6 +62,26 @@ Factors
 
 ___
 
+### Inputs dump
+
+* Budgets
+* Teacher salary
+* Class size
+* Afterschool
+* Length of school year
+* hours in class
+
+___
+
+### Output dump
+
+* Rank
+* Graduation Rank
+* ...
+
+
+___
+
 ### Issues
 
 Inflation?
