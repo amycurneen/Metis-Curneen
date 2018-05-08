@@ -14,4 +14,23 @@ ___
 
 ___
 
-#### Question/need:
+#### To Do
+
+**Things to add to my project - ideas from class**
+
+* SQL
+* dummy set
+    * DONE
+* linear/rbf SVM
+    * DONE on 15% of training data
+* tableau
+* decision tree
+    * random forest
+    * bagging
+    
+
+
+**To Do**
+
+* MVP presentation
+
