@@ -26,11 +26,15 @@ ___
 * tableau
 * decision tree
     * random forest
+    	* DONE
     * bagging
+    * boosting
+* Stratified sampling for unbalanced classes
+* 
     
 
 
 **To Do**
 
-* MVP presentation
+* Presentation
 
