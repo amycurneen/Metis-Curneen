@@ -1,0 +1,60 @@
+Date,extraction_type_class,basin,functional,non functional,basin_total
+01/01/2011,gravity,Internal,2004,690,Internalgravity
+01/01/2011,gravity,Lake Nyasa,3116,1259,Lake Nyasagravity
+01/01/2011,gravity,Lake Rukwa,509,353,Lake Rukwagravity
+01/01/2011,gravity,Lake Tanganyika,1873,645,Lake Tanganyikagravity
+01/01/2011,gravity,Lake Victoria,1548,1091,Lake Victoriagravity
+01/01/2011,gravity,Pangani,4800,2141,Panganigravity
+01/01/2011,gravity,Rufiji,3572,1054,Rufijigravity
+01/01/2011,gravity,Ruvuma / Southern Coast,670,434,Ruvuma / Southern Coastgravity
+01/01/2011,gravity,Wami / Ruvu,657,364,Wami / Ruvugravity
+01/01/2011,handpump,Internal,1767,483,Internalhandpump
+01/01/2011,handpump,Lake Nyasa,378,157,Lake Nyasahandpump
+01/01/2011,handpump,Lake Rukwa,674,541,Lake Rukwahandpump
+01/01/2011,handpump,Lake Tanganyika,1562,768,Lake Tanganyikahandpump
+01/01/2011,handpump,Lake Victoria,3765,1233,Lake Victoriahandpump
+01/01/2011,handpump,Pangani,303,188,Panganihandpump
+01/01/2011,handpump,Rufiji,1372,675,Rufijihandpump
+01/01/2011,handpump,Ruvuma / Southern Coast,774,500,Ruvuma / Southern Coasthandpump
+01/01/2011,handpump,Wami / Ruvu,775,541,Wami / Ruvuhandpump
+01/01/2011,motorpump,Internal,474,556,Internalmotorpump
+01/01/2011,motorpump,Lake Nyasa,2,4,Lake Nyasamotorpump
+01/01/2011,motorpump,Lake Rukwa,25,28,Lake Rukwamotorpump
+01/01/2011,motorpump,Lake Tanganyika,37,85,Lake Tanganyikamotorpump
+01/01/2011,motorpump,Lake Victoria,121,170,Lake Victoriamotorpump
+01/01/2011,motorpump,Pangani,9,14,Panganimotorpump
+01/01/2011,motorpump,Rufiji,164,242,Rufijimotorpump
+01/01/2011,motorpump,Ruvuma / Southern Coast,58,181,Ruvuma / Southern Coastmotorpump
+01/01/2011,motorpump,Wami / Ruvu,383,434,Wami / Ruvumotorpump
+01/01/2011,other,Internal,226,665,Internalother
+01/01/2011,other,Lake Nyasa,21,62,Lake Nyasaother
+01/01/2011,other,Lake Rukwa,14,211,Lake Rukwaother
+01/01/2011,other,Lake Tanganyika,329,931,Lake Tanganyikaother
+01/01/2011,other,Lake Victoria,346,1210,Lake Victoriaother
+01/01/2011,other,Pangani,82,358,Panganiother
+01/01/2011,other,Rufiji,62,314,Rufijiother
+01/01/2011,other,Ruvuma / Southern Coast,63,851,Ruvuma / Southern Coastother
+01/01/2011,other,Wami / Ruvu,92,593,Wami / Ruvuother
+01/01/2011,rope pump,Internal,14,17,Internalrope pump
+01/01/2011,rope pump,Lake Nyasa,7,3,Lake Nyasarope pump
+01/01/2011,rope pump,Lake Tanganyika,1,0,Lake Tanganyikarope pump
+01/01/2011,rope pump,Lake Victoria,120,68,Lake Victoriarope pump
+01/01/2011,rope pump,Pangani,1,8,Panganirope pump
+01/01/2011,rope pump,Rufiji,137,43,Rufijirope pump
+01/01/2011,rope pump,Ruvuma / Southern Coast,1,1,Ruvuma / Southern Coastrope pump
+01/01/2011,rope pump,Wami / Ruvu,29,1,Wami / Ruvurope pump
+01/01/2011,submersible,Internal,527,298,Internalsubmersible
+01/01/2011,submersible,Lake Nyasa,50,26,Lake Nyasasubmersible
+01/01/2011,submersible,Lake Rukwa,48,51,Lake Rukwasubmersible
+01/01/2011,submersible,Lake Tanganyika,46,154,Lake Tanganyikasubmersible
+01/01/2011,submersible,Lake Victoria,187,386,Lake Victoriasubmersible
+01/01/2011,submersible,Pangani,644,378,Panganisubmersible
+01/01/2011,submersible,Rufiji,192,128,Rufijisubmersible
+01/01/2011,submersible,Ruvuma / Southern Coast,430,530,Ruvuma / Southern Coastsubmersible
+01/01/2011,submersible,Wami / Ruvu,1458,646,Wami / Ruvusubmersible
+01/01/2011,wind-powered,Internal,27,37,Internalwind-powered
+01/01/2011,wind-powered,Lake Tanganyika,1,0,Lake Tanganyikawind-powered
+01/01/2011,wind-powered,Lake Victoria,2,1,Lake Victoriawind-powered
+01/01/2011,wind-powered,Pangani,10,4,Panganiwind-powered
+01/01/2011,wind-powered,Rufiji,6,15,Rufijiwind-powered
+01/01/2011,wind-powered,Wami / Ruvu,11,3,Wami / Ruvuwind-powered

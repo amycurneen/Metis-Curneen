@@ -1,0 +1,15 @@
+status,payment,# of Pumps,Percent of Pumps
+functional,never pay,13286,0.52414
+functional,other,729,0.69165
+functional,pay annually,2987,0.82015
+functional,pay monthly,6409,0.77217
+functional,pay per bucket,6499,0.72332
+functional,pay when scheme fails,2706,0.69136
+functional,unknown,3960,0.48547
+non functional,never pay,12062,0.47586
+non functional,other,325,0.30835
+non functional,pay annually,655,0.17985
+non functional,pay monthly,1891,0.22783
+non functional,pay per bucket,2486,0.27668
+non functional,pay when scheme fails,1208,0.30864
+non functional,unknown,4197,0.51453

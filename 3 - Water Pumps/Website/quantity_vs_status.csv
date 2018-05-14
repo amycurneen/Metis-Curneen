@@ -1,0 +1,72 @@
+Basin,Quantity,Status,# of Pumps
+Internal,seasonal,functional,650
+Internal,seasonal,non functional,184
+Internal,dry,functional,47
+Internal,dry,non functional,713
+Internal,insufficient,functional,1753
+Internal,insufficient,non functional,580
+Internal,enough,functional,2554
+Internal,enough,non functional,1156
+Lake Nyasa,dry,functional,11
+Lake Nyasa,dry,non functional,1023
+Lake Nyasa,enough,functional,2784
+Lake Nyasa,enough,non functional,340
+Lake Nyasa,insufficient,functional,591
+Lake Nyasa,insufficient,non functional,122
+Lake Nyasa,seasonal,functional,180
+Lake Nyasa,seasonal,non functional,11
+Lake Rukwa,dry,non functional,170
+Lake Rukwa,enough,functional,858
+Lake Rukwa,enough,non functional,615
+Lake Rukwa,insufficient,functional,312
+Lake Rukwa,insufficient,non functional,231
+Lake Rukwa,seasonal,functional,95
+Lake Rukwa,seasonal,non functional,131
+Lake Tanganyika,dry,functional,8
+Lake Tanganyika,dry,non functional,633
+Lake Tanganyika,enough,functional,2592
+Lake Tanganyika,enough,non functional,1221
+Lake Tanganyika,insufficient,functional,959
+Lake Tanganyika,insufficient,non functional,494
+Lake Tanganyika,seasonal,functional,250
+Lake Tanganyika,seasonal,non functional,177
+Lake Victoria,dry,functional,72
+Lake Victoria,dry,non functional,865
+Lake Victoria,enough,functional,3933
+Lake Victoria,enough,non functional,1926
+Lake Victoria,insufficient,functional,1521
+Lake Victoria,insufficient,non functional,1003
+Lake Victoria,seasonal,functional,485
+Lake Victoria,seasonal,non functional,243
+Pangani,dry,functional,7
+Pangani,dry,non functional,143
+Pangani,enough,functional,3582
+Pangani,enough,non functional,1180
+Pangani,insufficient,functional,2066
+Pangani,insufficient,non functional,1624
+Pangani,seasonal,functional,171
+Pangani,seasonal,non functional,109
+Rufiji,dry,functional,23
+Rufiji,dry,non functional,660
+Rufiji,enough,functional,3997
+Rufiji,enough,non functional,941
+Rufiji,insufficient,functional,897
+Rufiji,insufficient,non functional,636
+Rufiji,seasonal,functional,578
+Rufiji,seasonal,non functional,195
+Ruvuma / Southern Coast,dry,functional,20
+Ruvuma / Southern Coast,dry,non functional,1084
+Ruvuma / Southern Coast,enough,functional,1354
+Ruvuma / Southern Coast,enough,non functional,752
+Ruvuma / Southern Coast,insufficient,functional,367
+Ruvuma / Southern Coast,insufficient,non functional,479
+Ruvuma / Southern Coast,seasonal,functional,242
+Ruvuma / Southern Coast,seasonal,non functional,127
+Wami / Ruvu,dry,functional,6
+Wami / Ruvu,dry,non functional,761
+Wami / Ruvu,enough,functional,2394
+Wami / Ruvu,enough,non functional,1007
+Wami / Ruvu,insufficient,functional,900
+Wami / Ruvu,insufficient,non functional,594
+Wami / Ruvu,seasonal,functional,90
+Wami / Ruvu,seasonal,non functional,132
