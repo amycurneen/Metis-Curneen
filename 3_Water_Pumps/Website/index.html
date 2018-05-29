@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="shortcut icon" type="image/x-icon" href="tanzania24.ico" />
+        <meta charset="utf-8">
+        <link href="https://fonts.googleapis.com/css?family=Carter+One" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+        <title>Success of Water Pumps in Tanzania</title>
+
+
+
+        <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px ;
+        }
+        select {
+            display: block;
+        }
+        .bar {
+            fill: #9dc9a5;
+            opacity: 0.8;
+        }
+
+        .bar:hover {
+            fill: #53bbe0;
+          }
+
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: #000;
+            shape-rendering: crispEdges;
+        }
+        .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .photoheader {
+              display: inline-block;
+              margin-left: auto;
+              margin-right: auto;
+              height: 220px;
+          }
+
+          #images{
+              text-align:center;
+          }
+
+          h1 {font-family: 'Carter One', cursive; font-size: 32px}
+          h2 {font-family: 'Carter One', cursive;}
+
+        </style>
+
+    </head>
+    <body>
+
+
+      <div id="images">
+        <img class="photoheader" border="0" alt="" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlm2f3uqcegRkqSaDYZZZRv1Gzw0_eSkPqZxfTuDMUzsrOdwRJCg"/>
+        <img class="photoheader" border="0" alt="" src="https://st2.depositphotos.com/1087752/5866/i/950/depositphotos_58663151-stock-photo-a-woman-and-pump-water.jpg"/>
+        <img class="photoheader" border="0" alt="" src="http://maraselva.fiu.edu/wp-content/uploads/2016/05/children_waterpump_50-1.jpg"/>
+        <img class="photoheader" border="0" alt="" src="http://jewishhelpinghands.org/wp-content/uploads/2017/09/children-water-pump-tanzania-300x200.jpg"/>
+        <img class="photoheader" border="0" alt="" src="https://s3.amazonaws.com/drivendata/comp_images/pumping.jpg"/>
+      </div>​
+
+        <div id="text-explain">
+          <h1 align="center">Explore the four most important factors of the success of water pumps in Tanzania</h1>
+          <p align="center" style="font-size:130%;">Predict if your pump will function <a href="./Flask/my_flask.html">here </a></p>
+          <br>
+          <HR>
+          <br>
+          <h2>Region vs Pump Status</h2>
+          Pump status varies greatly across the 22 regions of Tanzania. Interact with the visualization below to see how each regions' pumps are disributed. <br>
+          <br>
+
+        </div>
+
+        <div id='vis-container'>
+
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+
+        <script type="text/javascript">
+            // Load and munge data, then make the visualization.
+            var fileName = "region-detailed.csv";
+            var statusFields = ["functional", "functional needs repair",	"non functional", "other"];
+
+            d3.csv(fileName, function(error, data) {
+                var regionMap = {};
+                data.forEach(function(d) {
+                    var region = d.region;
+                    regionMap[region] = [];
+
+                    // { regionName: [ bar1Val, bar2Val, ... ] }
+                    statusFields.forEach(function(field) {
+                        regionMap[region].push( +d[field] );
+                    });
+                });
+                makeVis(regionMap);
+            });
+
+            var makeVis = function(regionMap) {
+                // Define dimensions of vis
+                var margin = { top: 30, right: 50, bottom: 30, left: 50 },
+                    width  = 700 - margin.left - margin.right,
+                    height = 250 - margin.top  - margin.bottom;
+
+                // Make x scale
+                var xScale = d3.scale.ordinal()
+                    .domain(statusFields)
+                    .rangeRoundBands([0, width], 0.15);
+
+                // Make y scale, the domain will be defined on bar update
+                var yScale = d3.scale.linear()
+                    .range([height, 0]);
+
+                // Create canvas
+                var canvas = d3.select("#vis-container")
+                  .append("svg")
+                    .attr("width",  width  + margin.left + margin.right)
+                    .attr("height", height + margin.top  + margin.bottom)
+                  .append("g")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+                // Make x-axis and add to canvas
+                var xAxis = d3.svg.axis()
+                    .scale(xScale)
+                    .orient("bottom");
+
+                canvas.append("g")
+                    .attr("class", "x axis")
+                    .attr("transform", "translate(0," + height + ")")
+                    .call(xAxis);
+
+                // Make y-axis and add to canvas
+                var yAxis = d3.svg.axis()
+                    .scale(yScale)
+                    .orient("left");
+
+                var yAxisHandleForUpdate = canvas.append("g")
+                    .attr("class", "y axis")
+                    .call(yAxis);
+
+                yAxisHandleForUpdate.append("text")
+                    .attr("transform", "rotate(-90)")
+                    .attr("y", 6)
+                    .attr("dy", ".71em")
+                    .style("text-anchor", "end")
+                    .text("# of Pumps");
+
+
+                var updateBars = function(data) {
+                    // First update the y-axis domain to match data
+                    yScale.domain( d3.extent(data) );
+                    yAxisHandleForUpdate.call(yAxis);
+
+                    var bars = canvas.selectAll(".bar").data(data);
+
+                    // Add bars for new data
+                    bars.enter()
+                      .append("rect")
+                        .attr("class", "bar")
+                        .attr("x", function(d,i) { return xScale( statusFields[i] ); })
+                        .attr("width", xScale.rangeBand())
+                        .attr("y", function(d,i) { return yScale(d); })
+                        .attr("height", function(d,i) { return height - yScale(d); });
+
+                    // Update old ones, already have x / width from before
+                    bars
+                        .transition().duration(250)
+                        .attr("y", function(d,i) { return yScale(d); })
+                        .attr("height", function(d,i) { return height - yScale(d); })
+
+                    // Remove old ones
+                    bars.exit().remove();
+                };
+
+
+                // Handler for dropdown value change
+                var dropdownChange = function() {
+                    var newregion = d3.select(this).property('value'),
+                        newData   = regionMap[newregion];
+
+                    updateBars(newData);
+                };
+
+                // Get names of regions, for dropdown
+                var regions = Object.keys(regionMap);
+
+                var dropdown = d3.select("#vis-container")
+                    .insert("select", "svg")
+                    .on("change", dropdownChange);
+
+                dropdown.selectAll("option")
+                    .data(regions)
+                  .enter().append("option")
+                    .attr("value", function (d) { return d; })
+                    .text(function (d) {
+                        return d[0].toUpperCase() + d.slice(1,d.length); // capitalize 1st letter
+                    });
+
+                var initialData = regionMap[ regions[0] ];
+                updateBars(initialData);
+
+            };
+        </script>
+
+        </div>
+
+        <div id="text-explain">
+        Iringa is the region with the highest percent of functioning water pumps at a total of 78%. This region is known for its agriculture so it relies on reliable water sources. <br><br>
+        On the other hand, Lindi, Tanzania's least densely populated region, has under 30% functioning. These remote areas are less likely to be serviced once pumps stop functioning.
+        </div>
+
+        <br><br>
+
+        <HR>
+
+        <div id="text-explain">
+          <br>
+        <h2>Payment vs Pump Status</h2>
+        There are 5 specific payment schemes that are deployed at water pumps in Tanzania. Interact with the visual below to see how they impact the pump's functionalilty.
+        </div>
+
+        <div id="chartContainer">
+          <!--<script src="/d3_v4/d3.min.js"></script>-->
+
+
+          <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+
+          <script type="text/javascript">
+            var svg2 = dimple.newSvg("#chartContainer", 690, 400);
+            d3.csv("payment_data.csv", function (data2) {
+              var myChart = new dimple.chart(svg2, data2);
+
+              myChart.defaultColors = [
+              	new dimple.color("#9dc9a5"),
+              	new dimple.color("#53bbe0"),
+              ];
+
+              myChart.setBounds(60, 30, 610, 280)
+              var myAxisX = myChart.addCategoryAxis("x", ["payment", "status"]);
+              var myAxisY = myChart.addMeasureAxis("y", "Percent of Pumps");
+              myChart.addSeries("status", dimple.plot.bar);
+              myChart.addLegend(65, 10, 610, 20, "right");
+              myChart.draw();
+
+              svg2.append("line")
+                .attr("x1", myChart._xPixels())
+                .attr("x2", myChart._xPixels() + myChart._widthPixels())
+                .attr("y1", 145)
+                .attr("y2", 145)
+                .style("stroke", "red");
+
+
+
+            });
+          </script>
+        </div>
+        <br>
+        <div id="text-explain">
+        When a water pump has money coming in, it is more likely to be functioning. This revenue may be very small but it assists in repair costs and encourages the community to keep it functioning.<br>
+        They various payment schemes that require payment are not drastically different from each other.
+        </div>
+
+        <HR>
+
+          <div id="text-explain">
+          <br>
+          <h2>Quantity vs Pump Status</h2>
+          </div>
+
+          <div id="text-explain">
+          The quantity of water present at each water pump is classified in 4 different ways. Explore that classification across each Water Basin below.<br>
+          <br>
+          </div>
+
+
+          <html>
+            <div id="chartContainer3">
+              <script type="text/javascript">
+                var svg3 = dimple.newSvg("#chartContainer3", 1290, 700);
+                d3.csv("quantity_vs_status.csv", function (data3) {
+                  var myChart3 = new dimple.chart(svg3, data3);
+
+                  myChart3.defaultColors = [
+                  	new dimple.color("#9dc9a5"),
+                  	new dimple.color("#53bbe0"),
+                  ];
+
+                  myChart3.setBounds(95, 25, 1175, 635)
+                  myChart3.addCategoryAxis("x", ["Basin", "Status"]);
+                  var myAxis = myChart3.addCategoryAxis("y", "Quantity");
+                  myAxis.addOrderRule(["dry","seasonal","insufficient","enough"]);
+                  var z = myChart3.addMeasureAxis("z", "# of Pumps");
+                  var s = myChart3.addSeries("Status", dimple.plot.bubble);
+                  s.aggregate = dimple.aggregateMethod.max;
+                  z.overrideMax = 4000;
+                  myChart3.addLegend(240, 10, 1030, 20, "right");
+                  myChart3.draw();
+                });
+              </script>
+            </div>
+            </html>
+
+          </div>
+          <br>
+          <div id="text-explain">
+          The majority of water pumps are constructed in areas with "enough" water. Dry areas also have water pumps but their pumps are less likely to remain functional.
+          </div>
+
+          <HR>
+
+          <div id="text-explain">
+          <br>
+          <h2>Extraction Type vs Pump Status</h2>
+          There are 7 main extraction types for the water pumps in Tanzania. Explore below how each effective each of these extraction types are.
+          </div>
+
+          <div id="chartContainer4">
+            <script type="text/javascript">
+              var svg4 = dimple.newSvg("#chartContainer4", 590, 400);
+                d3.csv("extraction_vs_status.csv", function (data4) {
+                  // Latest period only
+                  dimple.filterData(data4, "Date", "01/01/2011");
+                  // Create the chart
+                  var myChart4 = new dimple.chart(svg4, data4);
+                  myChart4.setBounds(60, 30, 420, 330)
+
+                  // Create a standard bubble of SKUs by Price and Sales Value
+                  // We are coloring by Owner as that will be the key in the legend
+                  myChart4.addMeasureAxis("x", "functional");
+                  myChart4.addMeasureAxis("y", "non functional");
+                  myChart4.addSeries(["basin","extraction_type_class"], dimple.plot.bubble);
+                  var myLegend4 = myChart4.addLegend(530, 100, 60, 300, "Right");
+                  myChart4.draw();
+
+                  // This is a critical step.  By doing this we orphan the legend. This
+                  // means it will not respond to graph updates.  Without this the legend
+                  // will redraw when the chart refreshes removing the unchecked item and
+                  // also dropping the events we define below.
+                  myChart4.legends = [];
+
+                  // This block simply adds the legend title. I put it into a d3 data
+                  // object to split it onto 2 lines.  This technique works with any
+                  // number of lines, it isn't dimple specific.
+                  svg4.selectAll("title_text")
+                    .data(["Click legend to","show/hide extraction type:"])
+                    .enter()
+                    .append("text")
+                      .attr("x", 499)
+                      .attr("y", function (d, i) { return 90 + i * 14; })
+                      .style("font-family", "sans-serif")
+                      .style("font-size", "10px")
+                      .style("color", "Black")
+                      .text(function (d) { return d; });
+
+                  // Get a unique list of Owner values to use when filtering
+                  var filterValues = dimple.getUniqueValues(data4, "extraction_type_class");
+                  // Get all the rectangles from our now orphaned legend
+                  myLegend4.shapes.selectAll("rect")
+                    // Add a click event to each rectangle
+                    .on("click", function (e) {
+                      // This indicates whether the item is already visible or not
+                      var hide = false;
+                      var newFilters = [];
+                      // If the filters contain the clicked shape hide it
+                      filterValues.forEach(function (f) {
+                        if (f === e.aggField.slice(-1)[0]) {
+                          hide = true;
+                        } else {
+                          newFilters.push(f);
+                        }
+                      });
+                      // Hide the shape or show it
+                      if (hide) {
+                        d3.select(this).style("opacity", 0.2);
+                      } else {
+                        newFilters.push(e.aggField.slice(-1)[0]);
+                        d3.select(this).style("opacity", 0.8);
+                      }
+                      // Update the filters
+                      filterValues = newFilters;
+                      // Filter the data
+                      myChart4.data = dimple.filterData(data4, "extraction_type_class", filterValues);
+                      // Passing a duration parameter makes the chart animate. Without
+                      // it there is no transition
+                      myChart4.draw(800);
+                    });
+                });
+            </script>
+          </div>
+
+          <div id="text-explain">
+          "Keep it Simple Stupid" is a common phrase used in engineering. It holds true to the
+          problem water pumps as well. Simple extraction methods like gravity and hand pump are much more successful than the motor and wind extraction methods.
+          It should be encouraged to use easy to maintain systems. <br>
+          </div>
+
+          <HR>
+
+        <br>
+        <h2 align="center"> Thanks for to DrivenData for the data set </h2>
+        <a href="https://www.drivendata.org/competitions/7/pump-it-up-data-mining-the-water-table/">
+        <img src="DrivenData.png" alt="DD" height="40" class="center">
+        </a> <br>
+        <img src="flag.png" alt="flag" class="center">
+
+    </body>
+</html>

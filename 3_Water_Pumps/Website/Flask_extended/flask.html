@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="shortcut icon" type="image/x-icon" href="tanzania24.ico" />
+    <meta charset="utf-8" />
+    <title>Predicting Success</title>
+    <link rel="stylesheet" href="static/d3.slider.css" />
+    <style>
+
+     body {
+       font-family: Verdana,Arial,sans-serif;
+     }
+
+     h2 {
+       font-size: 1.1em;
+       margin: 60px 0 5px 0;
+       color: gray
+     }
+
+     h1 {
+       font-size: 1.5em;
+       margin: 60px 0 5px 0;
+       color: #666666
+     }
+
+     .space {
+       margin-bottom: 20 px;
+     }
+
+     .wrapper {
+       width: 400px;
+       margin-left: auto;
+       margin-right: auto;
+       margin-bottom: 0px;
+     }
+
+     #bar_chart {
+       margin-bottom: 0 px;
+     }
+
+     .bar {
+       fill: #969696;
+     }
+
+     span {
+       color: steelblue;
+     }
+
+     .clip-svg {
+       clip-path: url(#myClip);
+     }
+
+    </style>
+  </head>
+
+  <body>
+
+    <div style="text-align:center;">
+
+        <svg viewbox="15 15 75 75" width="40%">
+          <defs>
+            <clipPath id="myClip">
+              <path d="M56.545,42.645 C56.0125,41.75625 54.865,41.4825 53.96875,42.00375 C53.08375,42.54 52.795,43.6875 53.33125,44.58 C56.95375,50.61375 58.87,55.53 58.87,58.8 C58.87,61.905 57.4825,64.80375 55.06,66.75375 C54.25375,67.4025 54.1225,68.58375 54.77125,69.39 C55.1425,69.85125 55.68625,70.0875 56.23375,70.0875 C56.64625,70.0875 57.0625,69.9525 57.4075,69.675 C60.71875,67.0125 62.62,63.045 62.62,58.8 C62.62,54.79125 60.57625,49.3575 56.545,42.645 M49.78,78.09375 C39.83875,78.09375 31.75,70.005 31.75,60.06375 C31.75,45.79125 45.15625,28.3575 49.6975,22.8675 C54.1525,28.87875 67.81,48.255 67.81,60.06375 C67.81,70.005 59.725,78.09375 49.78,78.09375 M51.2575,18.71625 C50.9125,18.28125 50.395,18.01875 49.84375,18 C49.31125,18.0075 48.75625,18.21 48.385,18.6225 C47.55625,19.54875 28,41.5275 28,60.06375 C28,72.075 37.76875,81.84375 49.78,81.84375 C61.7875,81.84375 71.56,72.075 71.56,60.06375 C71.56,44.73 52.08625,19.77 51.2575,18.71625" fill="#000000" sketch:type="MSShapeGroup"/>
+            </clipPath>
+          </defs>
+          <rect width="400" height="400" style="fill:#53bbe0" clip-path="url(#myClip)" />
+          <svg id="bar_chart" clip-path="url(#myClip)" /></svg>
+        </svg>
+
+    </div>
+
+
+    <div id="chart_area" class="wrapper" style="text-align:center;">
+      <h1>Probability of Functioning Water Pumps</h1>
+      <p class="space"></p>
+      <div id="bar_chart">
+      </div>
+    </div>
+
+    <div id="sliders" class="wrapper">
+
+      <h2 class="feature">Amount of water available: <span id="amount_tsh">400</span></h2>
+      <div id="amount_tsh_slider"></div>
+
+      <h2 class="feature">Population around water pump: <span id="population">4000</span></h2>
+      <div id="population_slider"></div>
+
+      <h2 class="feature">Altitude of water pump: <span id="gps_height">200</span></h2>
+      <div id="gps_height_slider"></div>
+
+    </div>
+
+    <!-- Import the libraries: jQuery, d3, d3.slider -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="static/d3.slider.js"></script>
+
+    <script>
+
+     <!-- SINGLE BAR CHART -->
+
+     var current_amount_tsh = 200;
+     var current_population = 4000;
+     var current_gps_height = 400;
+     var current_risk = 62.0;
+
+     var chart = d3.select("#bar_chart")
+                   .append("svg:svg")
+                   .attr("width", 400)
+                   .attr("height", 400);
+
+     var chance_scale = d3.scale.linear()
+                                .domain([0, 100])
+                                .range([0, 200]);
+
+     var bar = chart.append("g")
+                    .attr("class", "bar")
+
+       bar.append("svg:rect")
+          .attr("id", "chancebar")
+          .attr("class", "bar")
+          .attr("width", 400)
+          .attr("height", 200 - chance_scale(current_risk));
+
+     /*bar.append("text")
+        .attr("id", "percent_text")
+        .attr("dy", ".75em")
+        .attr("y", 15)
+        .attr("x", chance_scale(current_risk-13))
+        .attr("text-anchor", "middle")
+        .attr("fill", "white")
+        .attr("font-size", 18)
+        .text( current_risk.toFixed(1) + "%");*/
+
+
+     <!-- FUNCTION TO GET CHANCE FROM YOUR PREDICTOR WITH AJAX AND CHANGE BAR  HEIGHT -->
+     function getAndDrawChance(amount_tsh, population, gps_height){
+
+       population = population;
+       $.ajax({
+         type: "POST",
+         contentType: "application/json; charset=utf-8",
+         url: "/score",
+         dataType: "json",
+         async: true,
+         data: "{\"example\": ["+amount_tsh+","+population+","+gps_height+"]}",
+         success: function (data) {
+           var chance = 100 * data["score"];
+           d3.select("#chancebar")
+             .attr("height", 200 - chance_scale(chance));
+           d3.select("#percent_text")
+             .attr("x", chance_scale(chance-13))
+             .text(chance.toFixed(1) + "%");
+         },
+         error: function (result) {
+         }
+       })
+     }
+
+
+     <!-- SLIDERS -->
+
+     d3.select('#amount_tsh_slider')
+       .call(
+         d3.slider()
+           .value(current_amount_tsh)
+           .min(0)
+           .max(30000)
+           .step(10)
+           .axis(true)
+           .on("slide", function(evt,value) {
+             d3.select('#amount_tsh').text(value);
+             current_amount_tsh = value;
+             getAndDrawChance(current_amount_tsh, current_population, current_gps_height)
+           }
+           )
+       );
+
+     d3.select('#population_slider')
+       .call(
+         d3.slider()
+           .value(current_population)
+           .min(0)
+           .max(50000)
+           .step(200)
+           .axis(true)
+           .on("slide", function(evt,value) {
+             d3.select('#population').text(value);
+             current_population = value;
+             getAndDrawChance(current_amount_tsh, current_population, current_gps_height)
+           }
+           )
+       );
+
+     d3.select('#gps_height_slider')
+       .call(
+         d3.slider()
+           .value(current_gps_height)
+           .max(-100)
+           .max(3000)
+           .step(1)
+           .axis(true)
+           .on("slide", function(evt,value) {
+             d3.select('#gps_height').text(value);
+             current_gps_height = value;
+             getAndDrawChance(current_amount_tsh, current_population, current_gps_height)
+           }
+           )
+       );
+
+       //'amount_tsh','population','gps_height','status_group'
+
+    </script>
+  </body>
+</html>
