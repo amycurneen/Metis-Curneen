@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="shortcut icon" type="image/x-icon" href="prison-bars.ico" />
+  <title>Sentiment of last words</title>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<style>
+		button {
+			position: absolute;
+			margin-left: 6px;
+			margin-top: 6px;
+		}
+	</style>
+</head>
+<body>
+	<button id="innocent">innocent</button>
+  <button id="thank_you" style="margin-left: 82px">thank you</button>
+  <button id="sorry" style="margin-left: 160px">sorry</button>
+  <button id="love" style="margin-left: 220px">love and family</button>
+	<!-- Location for page elements. -->
+<script>
+	//Make an SVG Container
+	var svgContainer = d3.select("body").append("svg")
+		.attr("width", 800)
+		.attr("height", 400);
+
+	// Draw the Rectangle
+	var rectangle = svgContainer.append("rect")
+    .style("fill", "lightsteelblue")
+		.attr("x", 50)
+		.attr("y", 50)
+		.attr("width", 50)
+		.attr("height", 50);
+
+  var pi = Math.PI;
+
+  var arc = svgContainer.arc()
+            .innerRadius(70)
+            .outerRadius(120)
+            .startAngle(-90 * (pi/180)) //converting from degs to radians
+            .endAngle(20 * (pi/180))
+            .attr("fill", "lightsteelblue")
+            .attr("transform", "translate(200,200)")
+            .attr('id','myArc')
+
+	d3.select("#innocent").on("click", function() {
+    rectangle
+		.transition()
+    .attr("width", 100); // New Width
+	});
+
+  d3.select("#thank_you").on("click", function() {
+    rectangle
+		.transition()
+    .attr("width", 120);
+	});
+
+  d3.select("#sorry").on("click", function() {
+    rectangle
+    .transition()
+    .attr("width", 10);
+  });
+
+  d3.select("#love").on("click", function() {
+    rectangle
+		.transition()
+    .attr("width", 140); // New Width
+	});
+
+</script>
+</html>

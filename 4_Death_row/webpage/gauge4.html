@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang='en-GB'>
+<head>
+  <style>
+    body {
+      font-family: sans-serif;
+      font-size: 16px;
+      line-height: 1.4;
+      display: block;
+      margin: 0;
+      padding: 0;
+      color: #333;
+      -webkit-font-smoothing: antialiased;
+    }
+    p {
+      font-family: sans-serif;
+      font-size: 14px;
+    }
+    /*chart styles*/
+    .gia-chart {
+      max-width: 620px;
+    }
+    .domain {
+      display: none;
+    }
+    .line {
+      stroke: #4bc6df;
+      stroke-width: 2px;
+      fill: none;
+    }
+    .area {
+      fill: #4bc6df;
+      opacity: 0.1;
+    }
+    .g-label-text {
+      font-family: sans-serif;
+      font-size: 14px;
+    }
+    .g-label-circle {
+      fill: #4bc6df;
+    }
+    .gia-key {
+      margin-bottom: 10px;
+    }
+    button {
+      background-color: #ffffff;
+      border: 1px solid #dcdcdc;
+      border-radius: 15px;
+      color: #333333;
+      padding: 5px 8px;
+      cursor: pointer;
+      display: inline-block;
+      margin-right: 10px;
+      text-align: center;
+      text-decoration: none;
+      font-size: 12px;
+      line-height: 20px;
+      font-family: sans-serif;
+    }
+    button:focus {
+      outline: 0;
+    }
+    .active {
+      background-color: #333333;
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+  <main>
+      <div class='gia-key'></div>
+
+      <div class='gia-chart'></div>
+  </main>
+
+  <script src="http://d3js.org/d3.v3.js"></script>
+
+  <script>
+  //Margin conventions
+  var margin = {top: 10, right: 10, bottom: 30, left: 50};
+
+  var width = 600 - margin.left - margin.right,
+      height = 350 - margin.top - margin.bottom;
+
+  //Parses date for correct time format
+  var parseDate = d3.time.format("%d-%b-%y").parse;
+
+  //Appends the svg to the chart-container div
+  var svg = d3.select(".gia-chart").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  //Creates the xScale
+  var xScale = d3.time.scale()
+    .range([0, width]);
+
+  //Creates the yScale
+  var yScale = d3.scale.linear()
+    .range([height, 0]);
+
+  //line function convention (feeds an array)
+  var line = d3.svg.line()
+    .interpolate("step-after")
+    .x(function(d) { return xScale(d.date); })
+    .y(function(d) { return yScale(d.dollar); });
+
+  //Loads the data
+  d3.csv("minwage.csv", ready);
+
+  function ready(err, data) {
+
+    if (err) throw "error loading data";
+
+    //FORMAT data
+    data.forEach(function(d) {
+      d.dollar = +d.dollar;
+      d.date = parseDate(d.date);
+    });
+
+    //Organizes the data
+    data.sort(function(a,b) { return a.date - b.date; });
+    var maxY = d3.max(data, function(d) { return d.dollar; });
+    var maxX = d3.max(data, function(d) { return d.date; });
+
+    //Defines the xScale max
+    xScale.domain(d3.extent(data, function(d) { return d.date; }));
+
+    //Defines the yScale max
+    yScale.domain([0, 10]);
+
+    //Organizes buttons data
+    var types = data.map(function(d) { return d.type;});
+
+    var uniq = d3.set(types).values();
+
+    //Buttons
+    var button = d3.select(".gia-key").selectAll("button")
+      .data(uniq)
+      .enter()
+      .append("button")
+      .attr("class", function (d) {
+        if ( d === "Unadjusted dollars" ) { return 'active'; }
+        else { return 'not-active'; }
+      })
+      .text(function(d) {return d;})
+      .on("click", function(d) {
+        updateChartForType(d);
+        d3.select(".active").classed("active", false);
+        d3.select(this).classed("active", true);
+      });
+
+
+    //Filters the data
+    initialType = data.filter(function(d) { return d.type === "Unadjusted dollars";});
+
+    //Binds the data to the line
+    var drawline = svg.append("path")
+      .datum(initialType)
+      .attr("class", "line")
+      .attr("d", line);
+
+    //Update chart on click
+    function updateChartForType(typeId) {
+
+      var typeData = data.filter(function(d) { return d.type === typeId;});
+
+      drawline
+        .datum(typeData)
+        .transition().duration(1000)
+        .attr("d", line);
+    };
+
+
+  };
+
+  </script>
+
+</body>
+</html>

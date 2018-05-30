@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="mystyle.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300|Raleway|Righteous|Roboto" rel="stylesheet">
+    <link rel="shortcut icon" type="image/x-icon" href="prison-bars.ico" />
+    <title>Any last words?</title>
+
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="https://d3js.org/d3-ease.v1.min.js"></script>
+    <script type="text/javascript" src="/javascript/draw_count.js"></script>
+    <script type="text/javascript" src="/javascript/draw_grid.js"></script>
+    <script type="text/javascript" src="/javascript/gauge_exp.js"></script>
+
+  </head>
+
+  <body style="max-width:960px;margin:0 auto;">
+    <div class="intro">
+      <h1>"Any last words, Inmate?"</h1>
+      <h3>Death Row Inmates in Texas</h3>
+    </div>
+
+    <p>“Do you have any last words?” The warden said to the inmate.</p>
+    <p>"I would like to give love to my mother, sisters and brothers” Freddie Webb replied, “and let them know
+      that I am thinking of them right now and I want to thank God for giving me such a loving family. To the
+      victim's family: I hope you will find it in your heart to forgive me as I have forgiven you. I'm ready, Warden." </p>
+    <p>Webb is one of the 554 people that has be executed in Texas since it became legal again in 1976. His last words are
+      written down in Texas’ history book for Texas is one of the only states that keeps public record of last words of inmates.</p>
+    <p>Every once in a while, you run across a dataset that you cannot walk away from. That is what happened to me when I
+      ran across the Texas death row inmates’ last words. There were last words that were spiritual. There were last words
+      that were remorseful. There were last words that were assertions of innocence. And there were some that were silent.
+      My goal is to visualize their last words for you here.</p>
+
+    <div class="viz" id="over_time">
+      <h2>Execution History in Texas</h2>
+
+      <script type="text/javascript">
+
+        d3.csv("count_by_year.csv", function(d) {
+              d['count'] = +d["count"];
+              d['year'] = +d["year"];
+              return d;
+          }, draw_count);
+
+      </script>
+
+    </div>
+
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam et lectus ac ex aliquam pellentesque et sed urna.
+      Suspendisse euismod ligula eros, a sollicitudin risus volutpat vitae. Fusce nunc eros, tristique at libero aliquam, tempor
+      vehicula turpis. Mauris leo purus, eleifend id neque sed, vulputate malesuada metus. Vivamus metus ex, consequat at lectus
+      non, sodales porttitor quam. Vestibulum fermentum fringilla lacus, in dictum orci aliquam sagittis. Orci varius natoque
+      penatibus et magnis dis parturient montes, nascetur ridiculus mus. Morbi tincidunt, mauris eget faucibus tempus, nisi turpis
+      vehicula eros, non rutrum arcu metus ut odio. Integer eget dapibus elit. Cras et ipsum tempor nulla ornare consequat in quis est.</p>
+    <br/>
+
+    <div class="viz" id="words_summary" align="center">
+      <h2>Sentiment of their last words?</h2>
+
+      <form>
+      <label><input type="radio" name="dataset" id="dataset" value="thankYou" checked> Thank You &emsp;</label>
+      <label><input type="radio" name="dataset" id="dataset" value="love"> Love and Family &emsp;</label>
+      <label><input type="radio" name="dataset" id="dataset" value="innocent"> Innocent &emsp;</label>
+      <label><input type="radio" name="dataset" id="dataset" value="sorry"> Sorry</label>
+      </form>
+
+      <script>
+        make_gauge();
+      </script>
+
+    </div>
+
+    <p > bullshit numbers above</b>
+
+    <p> Aenean ut nibh at metus malesuada faucibus. Sed tempor lectus a urna cursus, vel sagittis nunc pulvinar.
+      Quisque ornare augue ut diam varius facilisis. Orci varius natoque penatibus et magnis dis parturient montes,
+       nascetur ridiculus mus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia
+       Curae; Integer non fermentum sem. Cras vel risus dapibus, accumsan tellus at, ullamcorper sem. Vivamus
+       luctus orci quam, a auctor nisl tristique vitae. Ut eu fermentum nibh. Aliquam ut pretium ipsum, et sagittis
+       lacus. Quisque sit amet justo ut nisl hendrerit venenatis. Etiam vestibulum purus quam, id dictum sem
+       tincidunt in. Donec erat nisi, bibendum a interdum et, blandit in ex. Interdum et malesuada fames ac ante
+       ipsum primis in faucibus. Pellentesque sagittis erat sed lectus ultrices, sed faucibus nunc hendrerit.
+       Proin aliquet arcu vitae tellus sodales condimentum.</p>
+
+    <div class="viz" id="inmate_grid" style="height:800px;margin:0 auto;">
+      <h2>What were their last words? Can we classify them?</h2>
+      <p>Spiritual, remorseful, asserting innocence, nothing, etc... </p>
+      <p>(scale)1976 2018</p>
+
+      <script type="text/javascript">
+
+        d3.csv("Death_Row_Data2.csv", function(d) {
+              d['Execution'] = +d["Execution"];
+              return d;
+          }, draw_grid);
+
+      </script>
+    </div>
+
+    <div class="mvp" style="height:400px;margin:0 auto;">
+      <hr>
+      <h1>Project Update</h1>
+      <ul>
+        <li>D3 is crazy but I love it</li>
+        <li>Resources - D3 v3 vs v4 - I am sticking to v3 at the moment</li>
+        <li>Martini glass analogy (photo below)</li>
+        <li>... but I should also do some NLP soon</li>
+      </ul>
+
+      <img src="https://i.ytimg.com/vi/h8b8SOsSiT4/maxresdefault.jpg" alt="martini" width=1000px>
+    </div>
+
+  </body>
+</html>

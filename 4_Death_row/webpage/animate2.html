@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<style>
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  width: 960px;
+  height: 500px;
+  position: relative;
+}
+
+svg {
+	width: 100%;
+	height: 100%;
+}
+
+path.slice{
+	stroke-width:2px;
+}
+
+text {
+  font: 12px sans-serif;
+}
+
+</style>
+</head>
+<body>
+<form>
+<label><input type="radio" name="dataset" id="dataset" value="thankYou" checked> Thank You</label>
+<label><input type="radio" name="dataset" id="dataset" value="love"> Love and Family</label>
+<label><input type="radio" name="dataset" id="dataset" value="innocent"> Innocent</label>
+<label><input type="radio" name="dataset" id="dataset" value="sorry"> Sorry</label>
+</form>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script type="text/javascript" src="/javascript/gauge_exp.js"></script>
+<script>
+
+
+d3.select("input[value=\"thankYou\"]").property("checked", true);
+
+var svg = d3.select("body")
+	.append("svg")
+	.append("g")
+  .style("border-color", "black")
+  .style("border-style", "solid")
+  .style("border-width", "1px")
+
+svg.append("g")
+	.attr("class", "slices");
+svg.append("g")
+	.attr("class", "labelName");
+svg.append("g")
+	.attr("class", "labelValue");
+svg.append("g")
+	.attr("class", "lines");
+
+var width = 500,
+    height = 250,
+	  radius = 200;
+
+var pie = d3.layout.pie()
+	.sort(null)
+	.value(function(d) {
+		return d.value;
+	})
+  .startAngle(-0.5 * Math.PI)
+	.endAngle(0.5 * Math.PI);
+
+var arc = d3.svg.arc()
+	.outerRadius(radius)
+	.innerRadius(radius * 0.6);
+
+svg.attr("transform", "translate("+radius*1.1+","+radius*1.1+")");
+
+var colorRange = d3.scale.category20();
+var color = d3.scale.ordinal()
+	.range(colorRange.range());
+
+
+datasetThankYou = [
+		{label:"Category 1", value:67},
+        {label:"Category 2", value:33}
+        ];
+
+datasetLove = [
+		{label:"Category 1", value:96},
+        {label:"Category 2", value:4}
+        ];
+
+datasetInnocent = [
+		{label:"Category 1", value:6},
+        {label:"Category 2", value:94}
+        ];
+
+datasetSorry = [
+		{label:"Category 1", value:71},
+        {label:"Category 2", value:19}
+        ];
+
+change(datasetThankYou);
+
+
+d3.selectAll("input")
+	.on("change", selectDataset);
+
+</script>
+</body>

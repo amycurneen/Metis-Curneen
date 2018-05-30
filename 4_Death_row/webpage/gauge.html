@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <style>
+        svg {width:500px; height:500px}
+        button  {float:left}
+        line    {stroke:#ddd;shape-rendering: crispEdges;}
+        text    {text-anchor:middle;}
+        circle {fill:orange;stroke:orange;fill-opacity:0.5;}
+        .axis line {fill:none;stroke:#ddd;shape-rendering: crispEdges;}
+        .axis path  {fill:none;}
+        .axis text {font-size:0.7em;fill:#555;font-family:sans-serif}
+    </style>
+
+    <script src="http://d3js.org/d3.v3.js"></script>
+
+    <script>
+
+  			function innocent(){
+
+  				var myArc = d3.select("#myArc").transition();
+
+					myArc.attr("endAngle", "60 * (pi/180)").duration(1000);
+        };
+
+  	</script>
+
+  </head>
+
+  <body style="max-width:960px;margin:auto;">
+
+    <script>
+
+    function draw_arc(ending) {
+    var vis = d3.select("body")
+                .append("svg")
+
+    var pi = Math.PI;
+
+    var arc = d3.svg.arc()
+              .innerRadius(70)
+              .outerRadius(120)
+              .startAngle(-90 * (pi/180)) //converting from degs to radians
+              .endAngle(20 * (pi/180))
+
+    vis.attr("width", "400")
+        .attr("height", "400") // Added height and width so arc is visible
+        .append("path")
+        .attr("d", arc)
+        .attr("fill", "lightsteelblue")
+        .attr("transform", "translate(200,200)")
+        .attr('id','myArc');
+
+    };
+
+    draw_arc(20);
+
+    </script>
+
+    <button onclick="runTransitions()">Thank you</button>
+		<button onclick="innocent()">Innocent</button>
+
+  </body>
+</html>
