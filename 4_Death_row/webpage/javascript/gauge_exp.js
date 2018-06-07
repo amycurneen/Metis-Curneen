@@ -43,23 +43,33 @@ var current = svg.append("text")
         .text(current);
 
 datasetThankYou = [
-    {label:"Category 1", value:67},
-        {label:"Category 2", value:33}
+    {label:"Category 1", value:35},
+        {label:"Category 2", value:(100-35)}
         ];
 
 datasetLove = [
-    {label:"Category 1", value:96},
-        {label:"Category 2", value:4}
+    {label:"Category 1", value:82},
+        {label:"Category 2", value:(100-82)}
+        ];
+
+datasetReligious = [
+    {label:"Category 1", value:48},
+        {label:"Category 2", value:(100-48)}
         ];
 
 datasetInnocent = [
     {label:"Category 1", value:6},
-        {label:"Category 2", value:94}
+        {label:"Category 2", value:(100-6)}
         ];
 
 datasetSorry = [
-    {label:"Category 1", value:71},
-        {label:"Category 2", value:19}
+    {label:"Category 1", value:50},
+        {label:"Category 2", value:(100-50)}
+        ];
+
+datasetReady = [
+    {label:"Category 1", value:30},
+        {label:"Category 2", value:(100-30)}
         ];
 
 change(datasetThankYou);
@@ -83,6 +93,14 @@ function selectDataset()
 	{
 		change(datasetInnocent);
 	}
+  else if (value == "religion")
+	{
+		change(datasetReligious);
+	}
+  else if (value == "ready")
+	{
+		change(datasetReady);
+	}
   else if (value == "sorry")
 	{
 		change(datasetSorry);
@@ -95,8 +113,6 @@ function change(data) {
 	var slice = svg.select(".slices")
         .selectAll("path.slice")
         .data(pie(data), function(d){ return d.data.label });
-
-    console.log(data[0].value);
 
     slice.enter()
         .insert("path")

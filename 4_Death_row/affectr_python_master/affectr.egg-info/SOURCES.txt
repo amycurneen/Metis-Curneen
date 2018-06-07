@@ -1,0 +1,13 @@
+README.md
+setup.py
+affectr/__init__.py
+affectr/client.py
+affectr/example.py
+affectr/exceptions.py
+affectr/httpRequest.py
+affectr/objects.py
+affectr.egg-info/PKG-INFO
+affectr.egg-info/SOURCES.txt
+affectr.egg-info/dependency_links.txt
+affectr.egg-info/requires.txt
+affectr.egg-info/top_level.txt

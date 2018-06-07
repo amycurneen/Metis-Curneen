@@ -4,21 +4,29 @@
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="mystyle.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300|Raleway|Righteous|Roboto" rel="stylesheet">
-    <link rel="shortcut icon" type="image/x-icon" href="prison-bars.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="lettera.ico" />
     <title>Any last words?</title>
 
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="https://d3js.org/d3-ease.v1.min.js"></script>
+    <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
     <script type="text/javascript" src="/javascript/draw_count.js"></script>
     <script type="text/javascript" src="/javascript/draw_grid.js"></script>
     <script type="text/javascript" src="/javascript/gauge_exp.js"></script>
 
   </head>
 
+
   <body style="max-width:960px;margin:0 auto;">
+    <p style="font-size:20px; text-align:left;"> <strong>U.S.</strong> | Texas
+    <span style="float:right;">Amy's Blog Logo</span>
+    </p>
+    <hr>
+
     <div class="intro">
       <h1>"Any last words, Inmate?"</h1>
       <h3>Death Row Inmates in Texas</h3>
+      <h4 style="text-align: center;"> By <a href="https://www.linkedin.com/in/curneen" target="_blank">Amy Curneen</a> <br/> June 1st, 2018 </h4>
     </div>
 
     <p>“Do you have any last words?” The warden said to the inmate.</p>
@@ -56,13 +64,16 @@
     <br/>
 
     <div class="viz" id="words_summary" align="center">
-      <h2>Sentiment of their last words?</h2>
+      <h2>What do they talk about?</h2>
 
       <form>
-      <label><input type="radio" name="dataset" id="dataset" value="thankYou" checked> Thank You &emsp;</label>
-      <label><input type="radio" name="dataset" id="dataset" value="love"> Love and Family &emsp;</label>
-      <label><input type="radio" name="dataset" id="dataset" value="innocent"> Innocent &emsp;</label>
-      <label><input type="radio" name="dataset" id="dataset" value="sorry"> Sorry</label>
+        <label><input type="radio" name="dataset" id="dataset" value="thankYou" checked> Thank You &emsp;</label>
+        <label><input type="radio" name="dataset" id="dataset" value="love"> Love and Family &emsp;</label>
+        <label><input type="radio" name="dataset" id="dataset" value="innocent"> Innocent &emsp;</label>
+      <br/><br/>
+        <label><input type="radio" name="dataset" id="dataset" value="sorry"> Sorry   &emsp;</label>
+        <label><input type="radio" name="dataset" id="dataset" value="ready"> Ready Warden   &emsp;</label>
+        <label><input type="radio" name="dataset" id="dataset" value="religion"> Religion</label>
       </form>
 
       <script>
@@ -77,16 +88,29 @@
       Quisque ornare augue ut diam varius facilisis. Orci varius natoque penatibus et magnis dis parturient montes,
        nascetur ridiculus mus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia
        Curae; Integer non fermentum sem. Cras vel risus dapibus, accumsan tellus at, ullamcorper sem. Vivamus
-       luctus orci quam, a auctor nisl tristique vitae. Ut eu fermentum nibh. Aliquam ut pretium ipsum, et sagittis
-       lacus. Quisque sit amet justo ut nisl hendrerit venenatis. Etiam vestibulum purus quam, id dictum sem
-       tincidunt in. Donec erat nisi, bibendum a interdum et, blandit in ex. Interdum et malesuada fames ac ante
-       ipsum primis in faucibus. Pellentesque sagittis erat sed lectus ultrices, sed faucibus nunc hendrerit.
-       Proin aliquet arcu vitae tellus sodales condimentum.</p>
+       luctus orci quam, a auctor nisl tristique vitae.</p>
+
+    <div id="scatter_sentiment">
+
+      <h2>Positivity in their last minutes</h2>
+
+      <p> Aenean ut nibh at metus malesuada faucibus. Sed tempor lectus a urna cursus, vel sagittis nunc pulvinar.
+        Quisque ornare augue ut diam varius facilisis. Orci varius natoque penatibus et magnis dis parturient montes,
+         nascetur ridiculus mus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia
+         Curae; Integer non fermentum sem.</p>
+
+    </div>
+
+    <script src="javascript/scatter_sentiment.js" charset="utf-8"></script>
+
+    <p> Aenean ut nibh at metus malesuada faucibus. Sed tempor lectus a urna cursus, vel sagittis nunc pulvinar.
+      Quisque ornare augue ut diam varius facilisis. Orci varius natoque penatibus et magnis dis parturient montes,
+       nascetur ridiculus mus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia
+       Curae; Integer non fermentum sem.</p>
 
     <div class="viz" id="inmate_grid" style="height:800px;margin:0 auto;">
-      <h2>What were their last words? Can we classify them?</h2>
+      <h2>Your turn: read their last words</h2>
       <p>Spiritual, remorseful, asserting innocence, nothing, etc... </p>
-      <p>(scale)1976 2018</p>
 
       <script type="text/javascript">
 
@@ -98,18 +122,6 @@
       </script>
     </div>
 
-    <div class="mvp" style="height:400px;margin:0 auto;">
-      <hr>
-      <h1>Project Update</h1>
-      <ul>
-        <li>D3 is crazy but I love it</li>
-        <li>Resources - D3 v3 vs v4 - I am sticking to v3 at the moment</li>
-        <li>Martini glass analogy (photo below)</li>
-        <li>... but I should also do some NLP soon</li>
-      </ul>
-
-      <img src="https://i.ytimg.com/vi/h8b8SOsSiT4/maxresdefault.jpg" alt="martini" width=1000px>
-    </div>
 
   </body>
 </html>

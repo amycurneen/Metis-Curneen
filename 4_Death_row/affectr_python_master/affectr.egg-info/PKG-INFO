@@ -1,0 +1,17 @@
+Metadata-Version: 1.1
+Name: affectr
+Version: 0.1.0
+Summary: The Python client library for the TheySay Affectr API
+Home-page: http://theysay.io
+Author: TheySay
+Author-email: info@theysay.io
+License: Apache
+Description-Content-Type: UNKNOWN
+Description: UNKNOWN
+Platform: any
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
