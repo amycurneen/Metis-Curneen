@@ -1,0 +1,201 @@
+h1 {
+  color: black;
+  text-align: center;
+  font-family: 'Righteous', cursive;
+  font-size: 38px;
+}
+
+h2 {
+  color: black;
+  text-align: center;
+  font-family: 'Righteous', cursive;
+}
+
+form {
+    width: 500px;
+    margin: 0 auto;
+}
+
+h3 {
+  color: black;
+  text-align: center;
+  font-family: 'Raleway', sans-serif;
+}
+
+p {
+  color: black;
+  font-size: .9em;
+  font-family: 'Open Sans', sans-serif;
+}
+
+label {
+  color: black;
+  font-size: 1em;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 900;
+}
+
+li {
+  color: black;
+  font-size: 2em;
+  font-family: 'Open Sans', sans-serif;
+}
+
+line.event {
+  stroke-width: 10;
+  stroke: lightsteelblue;
+  fill: none;
+}
+
+.axis {
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
+}
+
+.label {
+  font-family: 'Roboto', sans-serif;
+  font-size: 19px;
+}
+
+path.domain {
+  fill: none;
+  stroke: black;
+  stroke-width: .5px;
+}
+
+.tick {
+  stroke: black;
+}
+
+circle {
+  stroke: none
+  fill: black;
+}
+
+#left {
+  width: 1000px;
+  float: left;
+}
+#right {
+  margin-left: 1000px;
+}
+
+div.tooltip_event {
+  position: absolute;
+  text-align: center;
+  width: 200px;
+  height: 75px;
+  padding: 4px;
+  font: 12px sans-serif;
+  background: #cacaca;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+div.tooltip_count {
+  position: absolute;
+  text-align: center;
+  width: 60px;
+  height: 28px;
+  padding: 2px;
+  font: 12px sans-serif;
+  background: #cacaca;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+.chart-gauge {
+  width: 400px;
+  margin: 100px auto
+}
+
+.chart-filled {
+	fill: steelblue;
+}
+.chart-empty {
+	fill: #dedede;
+}
+
+.needle, .needle-center {
+	fill: #464A4F;
+}
+
+svg {
+  font: 10px sans-serif;
+}
+
+svg.gauge {
+	width: 100%;
+	height: 100%;
+}
+
+path.slice{
+	stroke-width:2px;
+}
+
+path.gauge{
+	stroke-width: none;
+}
+
+text.value {
+  color: black;
+  font-size: 30px;
+  font-family: 'Open Sans', sans-serif;
+}
+
+/* scatter */
+
+
+rect {
+  fill: transparent;
+  shape-rendering: crispEdges;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.1);
+  shape-rendering: crispEdges;
+}
+
+.axisLine {
+  fill: none;
+  shape-rendering: crispEdges;
+  stroke: rgba(0, 0, 0, 0.5);
+  stroke-width: 2px;
+}
+
+.dot {
+  fill-opacity: .5;
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="style1.css">
+    <title>Ebloa Test graph</title>
+  </head>
+
+  <body>
+    <div id='container' class='container-1'>
+      <div id='graph'></div>
+
+      <div id='sections'>
+        <div class='format'>Hello</div>
+        <div class='format'>This</div>
+        <div class='format'>Is</div>
+        <div class='format'>Amy</div>
+        <div class='format'>And</div>
+        <div class='format'>This</div>
+        <div class='format'>Is</div>
+        <div class='format'>My</div>
+        <div class='format'>Scroll</div>
+
+      </div>
+
+      <script src="d3v4+jetpack.js"></script>
+      <script src="graph-scroll.js"></script>
+      <script>
+
+      function render(){
+
+        var width = 900;
+        var height = 600;
+
+        // data for test bubbles
+        // xpos, ypos, rad1, rad2, rad3
+        var dArray = [
+          [100,90,35,50,80,60,22,11,30,45,66],
+          [440,400,20,10,14,20,220,11,30,95,16],
+          [745,333,30,21,90,20,12,11,50,45,66],
+          [692,99,75,30,50,110,62,110,30,95,16],
+          [160,330,80,30,50,50,29,11,30,45,66]
+        ];
+
+        var svg = d3.select('#graph').html('')
+                  .append('svg')
+                  .attr("width", width)
+                  .attr("height",height);
+
+        var circle = svg.selectAll('.testing')
+                  .data(dArray)
+                  .enter()
+                  .append('circle')
+                  .attr("class","testing")
+                  .attr("cx", function(d) {
+                    console.log(d[0]);
+                    return d[0];
+                  })
+                  .attr("cy", function(d) {
+                    return d[1];
+                  })
+                  .attr("r", function(d) {
+                    return d[2];
+                  });
+
+        var gs = d3.graphScroll()
+            .container(d3.select('.container-1'))
+            .graph(d3.selectAll('container-1 #graph'))
+            .eventId('uniqueId1')
+            .sections(d3.selectAll('.container-1 #sections > div'))
+            .on('active', function(loc){
+              console.log(loc + ' section active');
+              d3.selectAll('.testing')
+                .transition()
+                .duration(800)
+                .attr("r", function(d) {
+                console.log(d[loc+2]);
+                return d[loc+2];})
+            });
+      }
+
+      render();
+
+
+      </script>
+
+    </div>
+
+  </body>
+</html>

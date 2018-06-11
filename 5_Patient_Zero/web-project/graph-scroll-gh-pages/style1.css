@@ -1,0 +1,32 @@
+body{
+  width: 900px;
+  margin: 0px auto;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+#graph{
+  width: 500px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0px;
+  z-index: 1;
+}
+
+.format {
+  margin-top: 0px;
+  margin-bottom: 450px;
+  background-color: pink;
+  top:0;
+  position: relative;
+  z-index:10;
+}
+
+circle{
+  fill: blue;
+}
+
+svg{
+  background-color: #eee;
+  position: absolute;
+  z-index:1;
+}
