@@ -1,32 +1,51 @@
-body{
-  width: 900px;
-  margin: 0px auto;
+body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: auto;
 }
 
-#graph{
-  width: 500px;
+#graph {
   position: -webkit-sticky;
   position: sticky;
-  top: 0px;
-  z-index: 1;
+  top: 50px;
 }
 
-.format {
-  margin-top: 0px;
-  margin-bottom: 450px;
-  background-color: pink;
-  top:0;
+.welcome {
+  margin: auto;
+  margin-top: 350px;
+  margin-bottom: 400px;
+  width: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+
   position: relative;
   z-index:10;
 }
 
-circle{
-  fill: blue;
+.pformat {
+  margin: auto;
+  margin-top: 50px;
+  margin-bottom: 1200px;
+  width: 50%;
+  background-color: white;
+  position: relative;
+  z-index:10;
 }
 
-svg{
-  background-color: #eee;
+.center {
+    text-align: center;
+}
+
+svg {
+  background-color: #ddd;
   position: absolute;
   z-index:1;
+}
+
+path {
+  stroke: black;
+  stroke-width: 0.25px;
+  fill: white;
+}
+
+.shadow1 {
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }

@@ -27,19 +27,43 @@
       <script src="graph-scroll.js"></script>
       <script>
 
-      d3.csv("africa_d3.csv", function(error,data) {
-        if (error) throw error;
+      var dataset;
 
+      d3.csv("africa_d3.csv", function(error,data) {
+
+        if (error) throw error;
+        dataset = data;
         function render(){
 
         var width = 900;
         var height = 600;
+        var padding = 100;
+
+        var xScale = d3.scaleLinear()
+                      .domain([6,18])
+                      .range([padding,width-padding]);
+
+        var yScale = d3.scaleLinear()
+                      .domain([-15,9])
+                      .range([padding,height-padding]);
+
+        var aScale = d3.scaleSqrt()
+                      .domain([0,5000])
+                      .range([0,padding/2]);
+
+        /*
+        var xAxis = d3.axisBottom()
+                      .scale(xScale);
+
+        var yAxis = d3.axisBottom()
+                      .scale(yScale);
+        */
 
         // data for test bubbles
         // xpos, ypos, rad1, rad2, rad3
         var dArray = [
           [100,90,35,50,80,60,22,11,30,45,66],
-          [440,400,20,10,14,20,220,11,30,95,16],
+          [440,400,20,10,14,20,120,11,30,95,16],
           [745,333,30,21,90,20,12,11,50,45,66],
           [692,99,75,30,50,110,62,110,30,95,16],
           [160,330,80,30,50,50,29,11,30,45,66]
@@ -51,19 +75,30 @@
                   .attr("height",height);
 
         var circle = svg.selectAll('.testing')
-                  .data(dArray)
+                  .data(data)
                   .enter()
                   .append('circle')
                   .attr("class","testing")
                   .attr("cx", function(d) {
-                    console.log(d[0]);
-                    return d[0];
+                    return xScale(+d[1]);
                   })
                   .attr("cy", function(d) {
-                    return d[1];
+                    return yScale(+d[2]);
                   })
                   .attr("r", function(d) {
-                    return d[2];
+                    return aScale(+d[4]);
+                  })
+                  .attr("fill", function(d) {
+                    if (d[3] == "cases") { return "red";
+                  } else if (d[3] == "death") { return "grey";
+                } else { return "red";
+                    }
+                  })
+                  .attr("z-index", function(d) {
+                    if (d[3] === "cases") { return 0;
+                    } else if (d[3] == "death") { return 2;
+                    } else { return 4;
+                    }
                   });
 
         var gs = d3.graphScroll()
@@ -77,8 +112,8 @@
                 .transition()
                 .duration(800)
                 .attr("r", function(d) {
-                console.log(d[loc+2]);
-                return d[loc+2];})
+                  return aScale(+d[loc+4]);
+                });
             });
       };
       render();
