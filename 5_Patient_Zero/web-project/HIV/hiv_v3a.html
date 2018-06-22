@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style1.css">
+    <title>Map Resize</title>
+    <style>
+      /* Make the chart container fill the page using CSS. */
+      #graph {
+        position: fixed;
+        left: 0px;
+        right: 0px;
+        top: 0px;
+        bottom: 0px;
+      }
+    </style>
+
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Amy Curneen</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Top</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container" style="margin-top:50px">
+      <div id='graph'></div>
+
+      <div id='container' class='container-1'>
+        <div id='sections'>
+
+          <div class="panel panel-default welcome shadow1">
+              <div class="panel-body center">
+                  <h2>Patient Zero</h2>
+                  <p>Ebola virus outbreak</p>
+                  <p>2014 - 2016</p>
+                  <br>
+              </div>
+          </div>
+
+          <div class = "invis">
+              section
+          </div>
+          <div class = "invis">
+              section
+          </div>
+          <div class = "invis">
+              section
+          </div>
+          <div class = "invis">
+              section
+          </div>
+          <div class = "invis">
+              section
+          </div>
+          <div class = "invis">
+              section
+          </div>
+          <div class = "invis">
+              section
+          </div>
+          <div class = "invis">
+              section
+          </div>
+          <div class = "invis">
+              section
+          </div>
+          <div class = "invis">
+              section
+          </div>
+          <div class = "invis">
+              section
+          </div>
+          <div class = "invis">
+              section
+          </div>
+          <div class = "invis">
+              section
+          </div>
+          <div class = "invis">
+              section
+          </div>
+          <div class = "invis">
+              section
+          </div>
+          <div class = "invis">
+              section
+          </div>
+          <div class = "invis">
+              section
+          </div>
+          <div class = "invis">
+              section
+          </div>
+          <div class = "invis">
+              section
+          </div>
+          <div class = "invis">
+              section
+          </div>
+
+        </div>
+      </div>
+</div>
+
+        <script src="d3v4+jetpack.js"></script>
+        <script src="graph-scroll.js"></script>
+        <script src="http://d3js.org/topojson.v0.min.js"></script>
+
+        <script>
+        var margin = {top: 0, left: 0, bottom: 0, right: 0}
+          , width = parseInt(d3.select('#graph').style('width'))
+          , width = width - margin.left - margin.right
+          , height = parseInt(d3.select('#graph').style('height'))
+          , height = height - margin.top - margin.bottom;
+
+        var scaleConstant = 6;
+
+          //, mapRatio = 1/1.6
+          //, height = width * mapRatio;
+
+        var svg = d3.select('#graph').html('')
+                  .append('svg')
+                  .attr("width", width)
+                  .attr("height",height)
+                  .attr("id","map");
+
+        var projection = d3.geoMercator()
+                          .scale(width/scaleConstant)
+                          .translate([width/2,height/2]);
+
+        var path = d3.geoPath()
+                    .projection(projection);
+
+        d3.json("json/world-110m2.json", function(error, topology) {
+          svg.selectAll("path")
+            .data(topojson.object(topology, topology.objects.countries)
+                .geometries)
+            .enter()
+            .append("path")
+            .attr("class","map_objects")
+            .attr("d", path)
+        });
+
+        d3.select(window).on('resize', resize);
+
+        function resize() {
+            // adjust things when the window size changes
+            width = parseInt(d3.select('#graph').style('width'));
+            console.log(width);
+            width = width - margin.left - margin.right;
+            height = parseInt(d3.select('#graph').style('height'));
+            console.log(height);
+            height = height - margin.left - margin.right;
+
+            // update projection
+            projection
+                .scale(width/scaleConstant)
+                .translate([width / 2, height / 2]);
+
+            // resize the map container
+            svg
+                .style('width', width + 'px')
+                .style('height', height + 'px');
+
+            // resize the map
+            svg.selectAll('.map_objects').attr('d', path);
+        }
+
+        </script>
+
+  </body>
+</html>

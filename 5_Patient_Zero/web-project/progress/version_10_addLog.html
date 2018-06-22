@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <script src="http://d3js.org/d3.v4.min.js"></script>
+  <script src="http://d3js.org/topojson.v0.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="style1.css">
+  <style>
+    body {
+      margin:0;
+      position:fixed;
+      top:0;right:0;bottom:0;left:0;
+    	font-family: Helvetica, Arial;
+   	}
+    #container {
+      position: relative;
+      z-index: 100;
+    }
+    #sticky {
+      position: absolute;
+      top: 0px;
+      bottom: 0px;
+      right: 0px;
+      left: 0px;
+      width: 100%;
+      z-index: 50;
+    }
+    .panel {
+      width: 100%;
+      padding-left: 20px;
+      padding-top: 25vh;
+      padding-bottom: 25vh;
+    }
+    .panel p {
+      padding-right: 50%;
+    }
+    .panel:first-child {
+      padding-top: 45vh;
+    }
+    .panel:last-child {
+      padding-bottom: 45vh;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="sticky">
+  </div>
+
+  <div id="container" style="height: 100vh; overflow: scroll">
+    <div id="content">
+      <div class="panel">
+        <p>This is a block that illustrates some of the tricks I've learned while designing scroll narratives like <a href="www.r2d3.us/visual-intro-to-machine-learning-part-1/" target="_block">A Visual Introduction to Machine Learning</a> and <a href="http://letsfreecongress.org" target="_block">Let's Free Congress</a>. While the animations are much more complicated, the core mechanics are similar</p> <p><em>Let's get scrolling!</em></p>
+      </div>
+      <div class="panel">
+        <p>In traditional animation, motion is linked to time. In Javascript that might be using <code>setInterval</code> to call some render code regularly, with the elapsed time as an input.</p>
+      </div>
+      <div class="panel">
+        <p>In scroll-linked animations, instead of using elapsed time, the <code>scrollTop</code> is used as the driver of motion. The scrollTop value (currently: <span id="currentScrollTop"></span>) can be transformed in various ways for various effects.</p>
+      </div>
+      <div class="panel">
+        <p>On the right, the <code>scrollTop</code> value is used as the input into a <code>d3.scale</code> function. That value is then used as the <code>rotation</code> value on the <code>&lt;g&gt;</code> group.</p>
+      </div>
+      <div class="panel">
+        <p>There are two chunks of code that makes this all work. First is an event handler that records the scroll position. It looks like this:</p>
+      </div>
+      <div class="panel">
+        <p>The second piece of code is the render code. Approximately 60 times a second (using <code>window.requestAnimationFrame</code>) it checks if <code>newScrollTop</code> is different from <code>scrollTop</code>. If it is different, then update our graphics accordingly. It looks like this:</p>
+        <p>That's the core of it. Although there's a couple other minor tricks that's worth pointing out.</p>
+      </div>
+      <div class="panel">
+        <p>1. <strong>Pacing the Panels</strong>: These panels that contains the text are spaced according to the height of the window, such that just one paragraph is visible at a time.</p>
+        <p>To achieve this in a responsive way, I use <code>vh</code> units to set the top and bottom padding on each panel. That way, the paragraphs are spaced correctly no matter the size of the screen.</p>
+      </div>
+      <div class="panel">
+        <p>2. <strong>Responsive Timing</strong>: The clock on the right hits 12 just as you finish scrolling, no matter what the screen size is. Getting the animation in sync with scroll requires using the dimensions of container and the screen as input in the animation scaling function.</p>
+        <p>The way this is achieved is through a callback on the <code>window.resize</code> handler. It reads in the relevant dimensions and feeds it back into the <code>.domain</code> of the <code>d3.scale</code> function.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var dataset;
+
+    d3.csv("patient_zero.csv", function(error,data) {
+      if (error) throw error;
+      dataset = data;
+
+      var scaleConstant = 6;
+
+      //map stuff
+      var projection = d3.geoMercator()
+        .translate([0,0]);
+
+      var path = d3.geoPath().projection(projection);
+      //end map stuff
+
+      var length = Object.keys(data[0]).length - 4
+
+      var WIDTH = window.innerWidth
+      var HEIGHT = window.innerHeight
+
+      var svg = d3.select("#sticky").html('')
+        .append("svg")
+        .attr("id","svgFull")
+      	.attr('width', WIDTH)
+      	.attr('height', HEIGHT)
+        .append('g')
+        .attr("class","map")
+
+      // for resize function
+      var margin = {top: 0, left: 0, bottom: 0, right: 0}
+        , width = parseInt(d3.select('#sticky').style('width'))
+        , width = width - margin.left - margin.right
+        , height = parseInt(d3.select('#sticky').style('height'))
+        , height = height - margin.top - margin.bottom;
+
+      //Define what to do when panning or zooming
+      var zooming = function(d) {
+        //New offset array
+        var offset = [d3.event.transform.x, d3.event.transform.y];
+
+        //Calculate new scale
+        var newScale = d3.event.transform.k * 2000;
+
+        //Update projection with new offset and scale
+        projection.translate(offset)
+              .scale(newScale);
+
+        //Update all paths and circles
+        svg.selectAll("path")
+          .attr("d", path);
+        };
+
+      //Then define the zoom behavior
+      var zoom = d3.zoom()
+        .on("zoom", zooming);
+
+      var g = svg.append("g")
+        .attr("id", "map")
+        .call(zoom)  //Bind the zoom behavior
+        .call(zoom.transform, d3.zoomIdentity  //Then apply the initial transform
+        .translate(WIDTH/2, HEIGHT/2)
+        .scale(.1)
+        .translate(0,0));
+
+      var currentScrollTop = d3.select('#currentScrollTop')
+
+      var bubbleLayer = svg.append('g')
+
+      var minRadius = 0;
+      var maxRadius = 100;
+
+      var areaScale = d3.scaleSqrt()
+          .domain([0,10000])
+          .range([minRadius,maxRadius])
+          .clamp(true)
+
+      var logScale = d3.scaleLog()
+        .domain([1,maxRadius])
+        .range([minRadius,maxRadius])
+
+      d3.json("json/world-110m2.json", function(error, topology) {
+        g.selectAll("path")
+          .data(topojson.object(topology, topology.objects.countries)
+              .geometries)
+          .enter()
+          .append("path")
+          .attr("class","map_objects")
+          .attr("d", path)
+
+      var circle = bubbleLayer.selectAll('.testing')
+                .data(data)
+                .enter()
+                .append('circle')
+                .attr("class","testing")
+                .attr("cx", function(d) {
+                  return projection([d[2],d[1]])[0];
+                })
+                .attr("cy", function(d) {
+                  return projection([d[2], d[1]])[1];
+                })
+                .attr("fill", function(d,i) {
+                    if (d[3] == "cases") { return "red";
+                  } else if (d[3] == "death") { return "grey";
+                    } else { return "blue";
+                  }})
+                //.attr("opacity", 0.6)
+                .attr("z-index", function(d,i) {
+                  if (d[3] == "cases") { return 0;
+                  } else if (d[3] == "death") { return 5;
+                  } else { return 10;
+                  }});
+
+      var body = d3.select('body').node()
+      var container = d3.select('#container')
+      var content = d3.select('#content')
+
+      var SCROLL_LENGTH = content.node().getBoundingClientRect().height - HEIGHT
+      var segment = SCROLL_LENGTH / (length-2)
+
+      //scroll pos to data point
+      var sectionScale = d3.scaleLinear()
+        .domain([0, SCROLL_LENGTH])
+        .range([0,length-2])
+
+      //data point to interpolation
+      //initialize - this will const update
+      var animateScale = d3.scaleLinear()
+        .range([+data[4],+data[5]])
+        .domain([0,segment])
+
+      // data to radius - sqrt to area
+      var sizeScale = d3.scaleSqrt()
+        .domain([0,3850])
+        .range([0,80])
+
+      var scrollTop = 0
+      var newScrollTop = 0
+
+      var sectionTop = 0
+      var newSectionTop = 0
+
+  		container
+    		.on("scroll.scroller", function() {
+        	newScrollTop = container.node().scrollTop
+  	    });
+
+      var setDimensions = function() {
+        WIDTH = window.innerWidth / 2
+  			HEIGHT = window.innerHeight
+        SCROLL_LENGTH = content.node().getBoundingClientRect().height - HEIGHT
+      }
+
+      var render = function() {
+        if (scrollTop !== newScrollTop) {
+          scrollTop = newScrollTop
+
+          circle.attr('r',function(d,i) {
+
+            sectionTop = Math.floor(sectionScale(scrollTop))
+            if (sectionTop !== (length)) {
+                animateScale.range([data[i][sectionTop+4],data[i][sectionTop+4+1]])
+                  .domain([sectionTop * segment, (sectionTop+1) * segment])
+            }
+
+            var fakeDataPoint = animateScale(scrollTop)
+            var myRadius = logScale(sizeScale(fakeDataPoint)+1)
+            return myRadius
+          })
+
+          currentScrollTop.text(scrollTop)
+        }
+
+        window.requestAnimationFrame(render)
+      }
+
+      window.requestAnimationFrame(render)
+
+      window.onresize = setDimensions
+    });
+
+    d3.select(window).on('resize', resize);
+
+    function resize() {
+        // adjust things when the window size changes
+        width = parseInt(d3.select('#sticky').style('width'));
+        console.log(width);
+        width = width - margin.left - margin.right;
+        height = parseInt(d3.select('#sticky').style('height'));
+        console.log(height);
+        height = height - margin.left - margin.right;
+
+        // update projection
+        projection
+            .scale(width/scaleConstant)
+            .translate([width / 2, height / 2]);
+
+        // resize the map container
+        d3.select("#svgFull")
+            .style('width', width + 'px')
+            .style('height', height + 'px');
+
+        // resize the map
+        svg.selectAll('.map_objects').attr('d', path);
+    }
+
+
+  });
+
+  </script>
+</body>

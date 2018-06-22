@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style1.css">
+    <title>Ebloa Test graph</title>
+    <style>
+      /* Make the chart container fill the page using CSS. */
+      #graph {
+        position: fixed;
+        left: 0px;
+        right: 0px;
+        top: 0px;
+        bottom: 0px;
+      }
+    </style>
+
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Amy Curneen</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Top</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container" style="margin-top:50px">
+
+      <div class="row">
+        <div class="col-md-12">
+          <div id='graph'></div>
+
+          <div id='container' class='container-1'>
+            <div id='sections'>
+
+              <div class="panel panel-default welcome shadow1">
+                  <div class="panel-body center">
+                      <h2>HIV</h2>
+                      <p>1990 - 2013</p>
+                      <br>
+                  </div>
+              </div>
+
+              <div class = "invis">
+                  section
+              </div>
+              <div class = "invis">
+                  section
+              </div>
+              <div class = "invis">
+                  section
+              </div>
+              <div class = "invis">
+                  section
+              </div>
+              <div class = "invis">
+                  section
+              </div>
+              <div class = "invis">
+                  section
+              </div>
+              <div class = "invis">
+                  section
+              </div>
+              <div class = "invis">
+                  section
+              </div>
+              <div class = "invis">
+                  section
+              </div>
+              <div class = "invis">
+                  section
+              </div>
+              <div class = "invis">
+                  section
+              </div>
+              <div class = "invis">
+                  section
+              </div>
+              <div class = "invis">
+                  section
+              </div>
+              <div class = "invis">
+                  section
+              </div>
+              <div class = "invis">
+                  section
+              </div>
+              <div class = "invis">
+                  section
+              </div>
+              <div class = "invis">
+                  section
+              </div>
+              <div class = "invis">
+                  section
+              </div>
+              <div class = "invis">
+                  section
+              </div>
+              <div class = "invis">
+                  section
+              </div>
+
+            </div>
+
+            <script src="d3v4+jetpack.js"></script>
+            <script src="graph-scroll.js"></script>
+            <script src="http://d3js.org/topojson.v0.min.js"></script>
+            <script>
+            var dataset;
+
+
+            d3.csv("hivlatlong.csv", function(error,data) {
+
+              if (error) throw error;
+              dataset = data;
+              function render(){
+
+              var graphDiv = document.getElementById("graph");
+
+              var padding = 100;
+
+              // Keep track of which visualization
+              // we are on and which was the last
+              // index activated. When user scrolls
+              // quickly, we want to call all the
+              // activate functions that they pass.
+              var lastIndex = -1;
+              var activeIndex = 0;
+
+              // main svg used for visualization
+              var svg = null;
+
+              // d3 selection that will be used
+              // for displaying visualizations
+              var g = null;
+
+              var aScale = d3.scaleLinear()
+                          .domain([0,50])
+                          .range([0,40])
+                          .nice();
+
+              var svg = d3.select(graphDiv).html('')
+                        .append('svg')
+                        .attr("class","map");
+
+              var width;
+              var height;
+
+              function redraw(){
+
+                  // Extract the width and height that was computed by CSS.
+                  var width = graphDiv.clientWidth;
+                  var height = graphDiv.clientHeight;
+
+                  // Use the extracted size to set the size of an SVG element.
+                  svg
+                    .attr("width", width)
+                    .attr("height", height);
+
+                    // Draw an X to show that the size is correct.
+                  var lines = svg.selectAll("line").data([
+                    {x1: 0, y1: 0, x2: width, y2: height},
+                    {x1: 0, y1: height, x2: width, y2: 0}
+                  ]);
+                  lines
+                    .enter().append("line")
+                      .style("stroke-width", 50)
+                      .style("stroke-opacity", 0.4)
+                      .style("stroke", "black")
+                      .merge(lines)
+                      .attr("x1", function (d) { return d.x1; })
+                      .attr("y1", function (d) { return d.y1; })
+                      .attr("x2", function (d) { return d.x2; })
+                      .attr("y2", function (d) { return d.y2; })
+                   ;
+              };
+
+              redraw();
+
+              svg.append('g');
+
+              window.addEventListener("resize", redraw);
+
+              var projection = d3.geoMercator()
+                                .translate([0,0]);
+
+              //Define what to do when panning or zooming
+              var zooming = function(d) {
+                //New offset array
+                var offset = [d3.event.transform.x, d3.event.transform.y];
+
+                //Calculate new scale
+                var newScale = d3.event.transform.k * 2000;
+
+                //Update projection with new offset and scale
+                projection.translate(offset)
+                      .scale(newScale);
+
+                //Update all paths and circles
+                svg.selectAll("path")
+                  .attr("d", path);
+
+                svg.selectAll("circle")
+                  .attr("cx", function(d) {
+                    return projection([d.long,d.Lat])[0];
+                  })
+                  .attr("cy", function(d) {
+                    return projection([d.long,d.Lat])[1];
+                  });
+              };
+
+              //Then define the zoom behavior
+              var zoom = d3.zoom()
+                     .on("zoom", zooming);
+
+              //mine
+              var path = d3.geoPath().projection(projection);
+
+              var g = svg.append("g")
+                        .attr("id", "map")
+                        .call(zoom)  //Bind the zoom behavior
+                        .call(zoom.transform, d3.zoomIdentity  //Then apply the initial transform
+                        .translate(width/2, height/2)
+                        .scale(.15)
+                        .translate(0,0));
+
+              //disable user zoom and pan -- code with move it with scroll
+              g.on("mousedown.zoom", null);
+              g.on("mousemove.zoom", null);
+              g.on("dblclick.zoom", null);
+              g.on("touchstart.zoom", null);
+              g.on("wheel.zoom", null);
+              g.on("mousewheel.zoom", null);
+              g.on("MozMousePixelScroll.zoom", null);
+
+              d3.json("json/world-110m2.json", function(error, topology) {
+                g.selectAll("path")
+                  .data(topojson.object(topology, topology.objects.countries)
+                      .geometries)
+                  .enter()
+                  .append("path")
+                  .attr("d", path)
+
+              var circle = svg.selectAll('.testing')
+                        .data(data)
+                        .enter()
+                        .append('circle')
+                        .attr("class","testing")
+                        .attr("cx", function(d) {
+                          return projection([d.long,d.Lat])[0];
+                        })
+                        .attr("cy", function(d) {
+                          return projection([d.long,d.Lat])[1];
+                        })
+                        .attr("r", function(d) {
+                          a = +d[1990];
+                          return aScale(a);
+                        })
+                        .attr("fill", "red")
+                        .attr("z-index", 4);
+
+
+              var preset = [[.107,0,0,0],
+                            [.107,0,0,0]];
+
+              var gs = d3.graphScroll()
+                  .container(d3.select('.container-1'))
+                  .graph(d3.selectAll('container-1 #graph'))
+                  .eventId('uniqueId1')
+                  .sections(d3.selectAll('.container-1 #sections > div'))
+                  .on('active', function(loc){
+                    console.log(loc + ' section active');
+
+                    if (loc <= (preset.length-1)) { var pos = loc;
+                    } else { var pos = preset.length-1;
+                    };
+
+                    g.transition()
+                      .duration(200)
+                      .call(zoom.transform, d3.zoomIdentity
+                                .translate(width/2, height/2)
+                                .scale(preset[pos][0])
+                                .translate(preset[pos][1],preset[pos][2]));
+
+                    d3.selectAll('.testing')
+                      .transition()
+                      .duration(700)
+                      .attr("r", function(d) {
+                        year = loc + 1990
+                        return aScale(+d[year]);
+                      });
+                  });
+              });
+
+            };
+
+            render();
+
+
+            });
+
+
+            </script>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>

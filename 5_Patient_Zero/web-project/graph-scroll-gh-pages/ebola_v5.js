@@ -146,20 +146,8 @@ d3.csv("patient_zero.csv", function(error,data) {
               }
             });
 
-  function updatePatientZero(progress) {
-    d3.selectAll('.testing')
-      .transition()
-      .duration(100)
-      .attr("r", function(d) {
-        return aScale(+d[loc+4]+1);
-      });
-  }
-
 
   var preset = [[.1,0,0,0],
-                [2.5,350,300,2000],
-                [2.5,350,300,2000],
-                [2.5,350,300,2000],
                 [2.5,350,300,2000],
                 [2.5,350,300,2000],
                 [2.5,350,300,2000],
@@ -173,9 +161,6 @@ d3.csv("patient_zero.csv", function(error,data) {
       .sections(d3.selectAll('.container-1 #sections > div'))
       .on('active', function(loc){
         console.log(loc + ' section active');
-
-        if (loc == 2) { updatePatientZero(progress);
-        }
 
         if (loc <= (preset.length-1)) { var pos = loc;
         } else { var pos = preset.length-1;
@@ -192,7 +177,11 @@ d3.csv("patient_zero.csv", function(error,data) {
           .transition()
           .duration(100)
           .attr("r", function(d) {
-            return aScale(+d[loc+4]+1);
+            if (loc <= 4) { var mine = loc;
+            } else { var mine = loc*20;
+            }
+            console.log(mine + ' mine');
+            return aScale(+d[mine+4]+1);
           });
       });
   });
